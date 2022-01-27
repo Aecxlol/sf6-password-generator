@@ -3,29 +3,29 @@
 {% block body %}
     <h1>Password generator</h1>
 
-    <form action="">
+    <form action="{{ path('app_generate_password') }}">
         <div>
             <label for="length">Length</label>
-            <select name="" id="length">
+            <select name="length" id="length">
                 {% for i in 8..60 %}
-                    <option value="{{ i }}">{{ i }}</option>
+                    <option value="{{ i }}" {{ i == 12 ? 'selected' }}>{{ i }}</option>
                 {% endfor %}
             </select>
         </div>
 
         <div>
             <label for="uppercase-letters">Uppercase letters</label>
-            <input type="checkbox" id="uppercase-letters">
+            <input type="checkbox" id="uppercase-letters" name="uppercase-letters">
         </div>
 
         <div>
             <label for="numbers">Numbers</label>
-            <input type="checkbox" id="numbers">
+            <input type="checkbox" id="numbers" name="numbers">
         </div>
 
         <div>
             <label for="special-characters">Special characters</label>
-            <input type="checkbox" id="special-characters">
+            <input type="checkbox" id="special-characters" name="special-characters">
         </div>
 
         <div>
