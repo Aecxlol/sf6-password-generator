@@ -3,6 +3,36 @@
 {% block body %}
     <h1>Password generator</h1>
 
+    <form action="">
+        <div>
+            <label for="length">Length</label>
+            <select name="" id="length">
+                {% for i in 8..60 %}
+                    <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="uppercase-letters">Uppercase letters</label>
+            <input type="checkbox" id="uppercase-letters">
+        </div>
+
+        <div>
+            <label for="numbers">Numbers</label>
+            <input type="checkbox" id="numbers">
+        </div>
+
+        <div>
+            <label for="special-characters">Special characters</label>
+            <input type="checkbox" id="special-characters">
+        </div>
+
+        <div>
+            <button type="submit">Generate password</button>
+        </div>
+    </form>
+
     <footer>
        <p>Built by Damien</p>
     </footer>
