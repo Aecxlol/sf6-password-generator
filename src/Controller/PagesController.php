@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Exception as ExceptionAlias;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,9 @@ class PagesController extends AbstractController
         return $this->render('pages/home.html.twig');
     }
 
+    /**
+     * @throws ExceptionAlias
+     */
     #[Route('/generate-password', name: 'app_generate_password')]
     public function generatePassword(Request $request): Response
     {
@@ -27,18 +31,18 @@ class PagesController extends AbstractController
             '?', '@', '[', ']', '<', '>'];
 
         while (count($password) < $length) {
-            $password[] = range('a', 'z')[array_rand(range('a', 'z'))];
+            $password[] = range('a', 'z')[random_int(0, count(range('a', 'z')) - 1)];
 
             if ($uppercaseLetterOptionIsChecked) {
-                $password[] = range('A', 'Z')[array_rand(range('A', 'Z'))];
+                $password[] = range('A', 'Z')[random_int(0, count(range('A', 'Z')) - 1)];
             }
 
             if ($numberOptionIsChecked) {
-                $password[] = range('0', '9')[array_rand(range('0', '9'))];
+                $password[] = range('0', '9')[random_int(0, count(range('0', '9')) - 1)];
             }
 
             if ($specialCharacterOptionIsChecked) {
-                $password[] = $specialCharacters[array_rand($specialCharacters)];
+                $password[] = $specialCharacters[random_int(0, count($specialCharacters) - 1)];
             }
         }
 
