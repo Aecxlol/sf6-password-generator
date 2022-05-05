@@ -61,7 +61,7 @@ class PagesController extends AbstractController
     /**
      * @throws ExceptionAlias
      */
-    private function secureShuffle(array &$arr)
+    private function secureShuffle(array &$arr): void
     {
         $arr    = array_values($arr);
         $length = count($arr);
