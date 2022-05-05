@@ -18,51 +18,37 @@ class PagesController extends AbstractController
     #[Route('/generate-password', name: 'app_generate_password')]
     public function generatePassword(Request $request): Response
     {
-        $password = '';
-
+        $password                        = [];
         $length                          = $request->query->getInt('length');
         $uppercaseLetterOptionIsChecked  = $request->query->getBoolean('uppercase-letters');
         $numberOptionIsChecked           = $request->query->getBoolean('numbers');
         $specialCharacterOptionIsChecked = $request->query->getBoolean('special-characters');
-
-
-        $characters                 = range('a', 'z');
-        $lowercaseLettersArraySize  = count(range('a', 'z'));
-        $characters                 = array_merge($characters, range('A', 'Z'));
-        $uppercaseLettersArraySize  = count(range('A', 'Z'));
-        $characters                 = array_merge($characters, range(0, 9));
-        $numbersArraySize           = count(range(0, 9));
-        $specialCharacters          = ['!', '#', '$', '%', '&', '(', ')', '*', '+', '-', '|', '_', '^',
+        $specialCharacters               = ['!', '#', '$', '%', '&', '(', ')', '*', '+', '-', '|', '_', '^',
             '?', '@', '[', ']', '<', '>'];
-        $characters                 = array_merge($characters, $specialCharacters);
-        $specialCharactersArraySize = count($specialCharacters);
 
-
-        while (strlen($password) < $length) {
-            $password = $password . $characters[mt_rand(0, $lowercaseLettersArraySize - 1)];
+        while (count($password) < $length) {
+            $password[] = range('a', 'z')[array_rand(range('a', 'z'))];
 
             if ($uppercaseLetterOptionIsChecked) {
-                $password = $password . $characters[mt_rand($lowercaseLettersArraySize, $lowercaseLettersArraySize + $uppercaseLettersArraySize - 1)];
+                $password[] = range('A', 'Z')[array_rand(range('A', 'Z'))];
             }
 
             if ($numberOptionIsChecked) {
-                $password = $password . $characters[mt_rand($lowercaseLettersArraySize + $uppercaseLettersArraySize, $lowercaseLettersArraySize + $uppercaseLettersArraySize + $numbersArraySize - 1)];
+                $password[] = range('0', '9')[array_rand(range('0', '9'))];
             }
 
             if ($specialCharacterOptionIsChecked) {
-                $password = $password . $characters[mt_rand($lowercaseLettersArraySize + $uppercaseLettersArraySize + $numbersArraySize, $lowercaseLettersArraySize + $uppercaseLettersArraySize + $numbersArraySize + $specialCharactersArraySize - 1)];
+                $password[] = $specialCharacters[array_rand($specialCharacters)];
             }
         }
+
+        $password = implode('', $password);
 
         if (strlen($password) > $length) {
             $elementsToDelete = strlen($password) - $length;
             $password         = substr($password, 0, -$elementsToDelete);
         }
 
-        $password = str_shuffle($password);
-
-        return $this->render('pages/password.html.twig', [
-            'password' => $password
-        ]);
+        return $this->render('pages/password.html.twig', compact('password'));
     }
 }
