@@ -53,6 +53,8 @@ class PagesController extends AbstractController
             $password         = substr($password, 0, -$elementsToDelete);
         }
 
+        $password = str_shuffle($password);
+
         return $this->render('pages/password.html.twig', compact('password'));
     }
 }
