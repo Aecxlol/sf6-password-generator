@@ -46,6 +46,8 @@ class PagesController extends AbstractController
             }
         }
 
+        $this->secureShuffle($password);
+
         $password = implode('', $password);
 
         if (strlen($password) > $length) {
@@ -53,8 +55,21 @@ class PagesController extends AbstractController
             $password         = substr($password, 0, -$elementsToDelete);
         }
 
-        $password = str_shuffle($password);
-
         return $this->render('pages/password.html.twig', compact('password'));
+    }
+
+    /**
+     * @throws ExceptionAlias
+     */
+    private function secureShuffle(array &$arr)
+    {
+        $arr    = array_values($arr);
+        $length = count($arr);
+        for ($i = $length - 1; $i > 0; $i--) {
+            $j       = random_int(0, $i);
+            $temp    = $arr[$i];
+            $arr[$i] = $arr[$j];
+            $arr[$j] = $temp;
+        }
     }
 }
