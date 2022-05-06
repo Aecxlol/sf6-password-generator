@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\PasswordGenerator;
 use Exception as ExceptionAlias;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,73 +28,14 @@ class PagesController extends AbstractController
     #[Route('/generate-password', name: 'app_generate_password')]
     public function generatePassword(Request $request): Response
     {
-        $password                        = [];
         $length                          = $request->query->getInt('length');
         $uppercaseLetterOptionIsChecked  = $request->query->getBoolean('uppercase-letters');
         $numberOptionIsChecked           = $request->query->getBoolean('numbers');
         $specialCharacterOptionIsChecked = $request->query->getBoolean('special-characters');
-        # The ranges are from ascii table
-        $specialCharacters               = array_merge(
-            range('!', '/'),
-            range(':', '@'),
-            range('[', '`'),
-            range('{', '~')
-        );
 
-        while (count($password) < $length) {
-            $password[] = $this->pickRandomItemFromARangeOfCharacters(range('a', 'z'));
-
-            if ($uppercaseLetterOptionIsChecked) {
-                $password[] = $this->pickRandomItemFromARangeOfCharacters(range('A', 'Z'));
-            }
-
-            if ($numberOptionIsChecked) {
-                $password[] = $this->pickRandomItemFromARangeOfCharacters(range('0', '9'));;
-            }
-
-            if ($specialCharacterOptionIsChecked) {
-                $password[] = $this->pickRandomItemFromARangeOfCharacters($specialCharacters);;
-            }
-        }
-
-        $password = $this->secureShuffle($password);
-
-        $password = implode('', $password);
-
-        if (strlen($password) > $length) {
-            $elementsToDelete = strlen($password) - $length;
-            $password         = substr($password, 0, -$elementsToDelete);
-        }
+        $passwordGenerator = new PasswordGenerator();
+        $password          = $passwordGenerator->generate($length, $uppercaseLetterOptionIsChecked, $numberOptionIsChecked, $specialCharacterOptionIsChecked);
 
         return $this->render('pages/password.html.twig', compact('password'));
-    }
-
-    /**
-     * Shuffle all the elements from a given array
-     * @param array $arr
-     * @return array
-     * @throws ExceptionAlias
-     */
-    private function secureShuffle(array $arr): array
-    {
-        $length = count($arr);
-        for ($i = $length - 1; $i > 0; $i--) {
-            $j       = random_int(0, $i);
-            $temp    = $arr[$i];
-            $arr[$i] = $arr[$j];
-            $arr[$j] = $temp;
-        }
-        return $arr;
-    }
-
-    /**
-     * Pick a random character from an array
-     * @param array $rangeOfCharacters
-     * @return string
-     * @throws ExceptionAlias
-     */
-    private function pickRandomItemFromARangeOfCharacters(array $rangeOfCharacters): string
-    {
-        return $rangeOfCharacters[random_int(0, count($rangeOfCharacters) - 1)];
     }
 }
