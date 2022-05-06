@@ -26,21 +26,22 @@ class PasswordGenerator
             range('{', '~')
         );
 
+        $mapping = [
+            [$uppercaseLetterOptionIsChecked, range('A', 'Z')],
+            [$numberOptionIsChecked, range('0', '9')],
+            [$specialCharacterOptionIsChecked, $specialCharacters],
+
+        ];
+
         while (count($password) < $length) {
-            $password[] = $this->pickRandomItemFromARangeOfCharacters(range('a', 'z'));
-
-            if ($uppercaseLetterOptionIsChecked) {
-                $password[] = $this->pickRandomItemFromARangeOfCharacters(range('A', 'Z'));
-            }
-
-            if ($numberOptionIsChecked) {
-                $password[] = $this->pickRandomItemFromARangeOfCharacters(range('0', '9'));;
-            }
-
-            if ($specialCharacterOptionIsChecked) {
-                $password[] = $this->pickRandomItemFromARangeOfCharacters($specialCharacters);;
+            foreach ($mapping as [$optionIsChecked, $rangeOfCharactersAccordingToTheOptionChecked]) {
+                $password[] = $this->pickRandomItemFromARangeOfCharacters(range('a', 'z'));
+                if ($optionIsChecked) {
+                    $password[] = $this->pickRandomItemFromARangeOfCharacters($rangeOfCharactersAccordingToTheOptionChecked);
+                }
             }
         }
+
 
         $password = $this->secureShuffle($password);
 
