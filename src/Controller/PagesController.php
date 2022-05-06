@@ -32,8 +32,13 @@ class PagesController extends AbstractController
         $uppercaseLetterOptionIsChecked  = $request->query->getBoolean('uppercase-letters');
         $numberOptionIsChecked           = $request->query->getBoolean('numbers');
         $specialCharacterOptionIsChecked = $request->query->getBoolean('special-characters');
-        $specialCharacters               = ['!', '#', '$', '%', '&', '(', ')', '*', '+', '-', '|', '_', '^',
-            '?', '@', '[', ']', '<', '>'];
+        # The ranges are from ascii table
+        $specialCharacters               = array_merge(
+            range('!', '/'),
+            range(':', '@'),
+            range('[', '`'),
+            range('{', '~')
+        );
 
         while (count($password) < $length) {
             $password[] = $this->pickRandomItemFromARangeOfCharacters(range('a', 'z'));
