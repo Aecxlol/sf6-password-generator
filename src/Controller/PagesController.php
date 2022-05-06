@@ -10,6 +10,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PagesController extends AbstractController
 {
+    /**
+     * @return Response
+     */
     #[Route('/', name: 'app_home')]
     public function home(): Response
     {
@@ -17,6 +20,8 @@ class PagesController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @return Response
      * @throws ExceptionAlias
      */
     #[Route('/generate-password', name: 'app_generate_password')]
@@ -31,18 +36,18 @@ class PagesController extends AbstractController
             '?', '@', '[', ']', '<', '>'];
 
         while (count($password) < $length) {
-            $password[] = range('a', 'z')[random_int(0, count(range('a', 'z')) - 1)];
+            $password[] = $this->pickRandomItemFromARangeOfCharacters(range('a', 'z'));
 
             if ($uppercaseLetterOptionIsChecked) {
-                $password[] = range('A', 'Z')[random_int(0, count(range('A', 'Z')) - 1)];
+                $password[] = $this->pickRandomItemFromARangeOfCharacters(range('A', 'Z'));
             }
 
             if ($numberOptionIsChecked) {
-                $password[] = range('0', '9')[random_int(0, count(range('0', '9')) - 1)];
+                $password[] = $this->pickRandomItemFromARangeOfCharacters(range('0', '9'));;
             }
 
             if ($specialCharacterOptionIsChecked) {
-                $password[] = $specialCharacters[random_int(0, count($specialCharacters) - 1)];
+                $password[] = $this->pickRandomItemFromARangeOfCharacters($specialCharacters);;
             }
         }
 
@@ -59,6 +64,9 @@ class PagesController extends AbstractController
     }
 
     /**
+     * Shuffle all the elements from a given array
+     * @param array $arr
+     * @return array
      * @throws ExceptionAlias
      */
     private function secureShuffle(array $arr): array
@@ -71,5 +79,16 @@ class PagesController extends AbstractController
             $arr[$j] = $temp;
         }
         return $arr;
+    }
+
+    /**
+     * Pick a random character from an array
+     * @param array $rangeOfCharacters
+     * @return string
+     * @throws ExceptionAlias
+     */
+    private function pickRandomItemFromARangeOfCharacters(array $rangeOfCharacters): string
+    {
+        return $rangeOfCharacters[random_int(0, count($rangeOfCharacters) - 1)];
     }
 }
