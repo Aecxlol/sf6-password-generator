@@ -22,14 +22,14 @@ class PagesController extends AbstractController
 
     /**
      * @param Request $request
+     * @param PasswordGenerator $passwordGenerator
      * @return Response
      * @throws ExceptionAlias
      */
     #[Route('/generate-password', name: 'app_generate_password')]
-    public function generatePassword(Request $request): Response
+    public function generatePassword(Request $request, PasswordGenerator $passwordGenerator): Response
     {
-        $passwordGenerator = new PasswordGenerator();
-        $password          = $passwordGenerator->generate(
+        $password = $passwordGenerator->generate(
             length: $request->query->getInt('length'),
             uppercaseLetterOptionIsChecked: $request->query->getBoolean('uppercase-letters'),
             numberOptionIsChecked: $request->query->getBoolean('numbers'),
