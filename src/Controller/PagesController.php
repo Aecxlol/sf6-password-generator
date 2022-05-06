@@ -28,13 +28,13 @@ class PagesController extends AbstractController
     #[Route('/generate-password', name: 'app_generate_password')]
     public function generatePassword(Request $request): Response
     {
-        $length                          = $request->query->getInt('length');
-        $uppercaseLetterOptionIsChecked  = $request->query->getBoolean('uppercase-letters');
-        $numberOptionIsChecked           = $request->query->getBoolean('numbers');
-        $specialCharacterOptionIsChecked = $request->query->getBoolean('special-characters');
-
         $passwordGenerator = new PasswordGenerator();
-        $password          = $passwordGenerator->generate($length, $uppercaseLetterOptionIsChecked, $numberOptionIsChecked, $specialCharacterOptionIsChecked);
+        $password          = $passwordGenerator->generate(
+            length: $request->query->getInt('length'),
+            uppercaseLetterOptionIsChecked: $request->query->getBoolean('uppercase-letters'),
+            numberOptionIsChecked: $request->query->getBoolean('numbers'),
+            specialCharacterOptionIsChecked: $request->query->getBoolean('special-characters')
+        );
 
         return $this->render('pages/password.html.twig', compact('password'));
     }
