@@ -33,6 +33,8 @@ class PasswordGenerator
 
         ];
 
+        # We make sure that the password contains at least
+        # one character of each option checked
         while (count($password) < $length) {
             foreach ($mapping as [$optionIsChecked, $rangeOfCharactersAccordingToTheOptionChecked]) {
                 $password[] = $this->pickRandomItemFromARangeOfCharacters(range('a', 'z'));
@@ -42,11 +44,15 @@ class PasswordGenerator
             }
         }
 
-
+        # We shuffle the password to make the password to not always have
+        # the same order as lowercase-uppercase-number-specialChar
         $password = $this->secureShuffle($password);
 
+        # Converts the array into a string
         $password = implode('', $password);
 
+        # We make sure that the password doesn't exceed the length chosen
+        # by the user
         if (strlen($password) > $length) {
             $elementsToDelete = strlen($password) - $length;
             $password         = substr($password, 0, -$elementsToDelete);
