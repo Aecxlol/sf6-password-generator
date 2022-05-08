@@ -17,7 +17,11 @@ class PagesController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function home(): Response
     {
-        return $this->render('pages/home.html.twig');
+        return $this->render('pages/home.html.twig', [
+            'password_min_length' => $this->getParameter('app.password_min_length'),
+            'password_max_length' => $this->getParameter('app.password_max_length'),
+            'password_default_length' => $this->getParameter('app.password_default_length')
+        ]);
     }
 
     /**
@@ -30,7 +34,7 @@ class PagesController extends AbstractController
     public function generatePassword(Request $request, PasswordGenerator $passwordGenerator): Response
     {
         $password = $passwordGenerator->generate(
-            length: max(min($request->query->getInt('length'), 60), 8),
+            length: max(min($request->query->getInt('length'), $this->getParameter('app.password_max_length')), $this->getParameter('app.password_min_length')),
             uppercaseLetterOptionIsChecked: $request->query->getBoolean('uppercase-letters'),
             numberOptionIsChecked: $request->query->getBoolean('numbers'),
             specialCharacterOptionIsChecked: $request->query->getBoolean('special-characters')
