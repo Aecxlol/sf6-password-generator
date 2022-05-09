@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PagesController extends AbstractController
 {
     /**
+     * @param Request $request
      * @return Response
      */
     #[Route('/', name: 'app_home')]
