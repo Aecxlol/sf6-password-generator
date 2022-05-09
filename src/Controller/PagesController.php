@@ -12,14 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class PagesController extends AbstractController
 {
     /**
-     * @param Request $request
      * @return Response
      */
     #[Route('/', name: 'app_home')]
-    public function home(Request $request): Response
+    public function home(): Response
     {
         return $this->render('pages/home.html.twig', [
-            'password_min_length' => $request->getSession()->get('app.length', $this->getParameter('app.password_min_length')),
+            'password_min_length' => $this->getParameter('app.password_min_length'),
             'password_max_length' => $this->getParameter('app.password_max_length'),
             'password_default_length' => $this->getParameter('app.password_default_length')
         ]);
@@ -39,15 +38,6 @@ class PagesController extends AbstractController
         $uppercaseLetters = $request->query->getBoolean('uppercase-letters');
         $digits = $request->query->getBoolean('digits');
         $specialCharacters = $request->query->getBoolean('special-characters');
-
-        # Also saving everything in a session
-        # to use these values in the template
-        $session = $request->getSession();
-
-        $session->set('app.length', $length);
-        $session->set('app.uppercaseLetters', $uppercaseLetters);
-        $session->set('app.digits', $digits);
-        $session->set('app.specialCharacters', $specialCharacters);
 
         # We make sure that the password length is always
         # < 60 {app.password_max_length}
