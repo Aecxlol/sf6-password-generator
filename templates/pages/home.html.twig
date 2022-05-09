@@ -15,17 +15,17 @@
 
         <div>
             <label for="uppercase-letters">Uppercase letters</label>
-            <input type="checkbox" id="uppercase-letters" name="uppercase-letters">
+            <input type="checkbox" id="uppercase-letters" name="uppercase-letters" {{ app.session.get('app.uppercaseLetters') ? 'checked' }}>
         </div>
 
         <div>
-            <label for="numbers">Numbers</label>
-            <input type="checkbox" id="numbers" name="numbers">
+            <label for="digits">Numbers</label>
+            <input type="checkbox" id="digits" name="digits" {{ app.session.get('app.digits') ? 'checked' }}>
         </div>
 
         <div>
             <label for="special-characters">Special characters</label>
-            <input type="checkbox" id="special-characters" name="special-characters">
+            <input type="checkbox" id="special-characters" name="special-characters" {{ app.session.get('app.specialCharacters') ? 'checked' }}>
         </div>
 
         <div>

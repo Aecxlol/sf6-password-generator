@@ -9,12 +9,12 @@ class PasswordGenerator
     /**
      * @param int $length
      * @param bool $uppercaseLetterOptionIsChecked
-     * @param bool $numberOptionIsChecked
+     * @param bool $digitOptionIsChecked
      * @param bool $specialCharacterOptionIsChecked
      * @return string
      * @throws ExceptionAlias
      */
-    public function generate(int $length, bool $uppercaseLetterOptionIsChecked = false, bool $numberOptionIsChecked = false, bool $specialCharacterOptionIsChecked = false): string
+    public function generate(int $length, bool $uppercaseLetterOptionIsChecked = false, bool $digitOptionIsChecked = false, bool $specialCharacterOptionIsChecked = false): string
     {
         $password = [];
 
@@ -28,7 +28,7 @@ class PasswordGenerator
 
         $mapping = [
             [$uppercaseLetterOptionIsChecked, range('A', 'Z')],
-            [$numberOptionIsChecked, range('0', '9')],
+            [$digitOptionIsChecked, range('0', '9')],
             [$specialCharacterOptionIsChecked, $specialCharacters],
 
         ];
@@ -45,7 +45,7 @@ class PasswordGenerator
         }
 
         # We shuffle the password to make the password to not always have
-        # the same order as lowercase-uppercase-number-specialChar
+        # the same order as lowercase-uppercase-digit-specialChar
         $password = $this->secureShuffle($password);
 
         # Converts the array into a string
