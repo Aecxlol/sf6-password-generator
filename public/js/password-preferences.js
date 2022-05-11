@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const UPPERCASE_LETTERS_SELECT  = document.getElementById('uppercase-letters');
     const DIGITS_SELECT             = document.getElementById('digits');
     const SPECIAL_CHARACTERS_SELECT = document.getElementById('special-characters');
-    
-    console.log(FORM);
 
     const USER_PASSWORD_PREFERENCES = JSON.parse(localStorage.getItem('user_password_preferences'));
 
