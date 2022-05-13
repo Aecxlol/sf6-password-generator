@@ -17,17 +17,17 @@
 
         <div>
             <label for="uppercase-letters">Uppercase letters</label>
-            <input type="checkbox" id="uppercase-letters" name="uppercase-letters">
+            <input type="checkbox" id="uppercase-letters" name="uppercase-letters" {{ password_uppercase_letters ? 'checked' }}>
         </div>
 
         <div>
             <label for="digits">Numbers</label>
-            <input type="checkbox" id="digits" name="digits">
+            <input type="checkbox" id="digits" name="digits" {{ password_digits ? 'checked'  }}>
         </div>
 
         <div>
             <label for="special-characters">Special characters</label>
-            <input type="checkbox" id="special-characters" name="special-characters">
+            <input type="checkbox" id="special-characters" name="special-characters" {{ password_special_characters ? 'checked' }}>
         </div>
 
         <div>
