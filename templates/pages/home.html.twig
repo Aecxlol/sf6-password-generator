@@ -1,45 +1,55 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Password generator</h1>
 
     {% set password_length = app.request.cookies.getInt('app_length', password_default_length) %}
 
-    <form action="{{ path('app_generate_password') }}" method="get">
-        <div>
-            <label for="length">Length</label>
-            <select name="length" id="length">
-                {% for i in password_min_length..password_max_length %}
-                    <option value="{{ i }}" {{ i == password_length ? 'selected' }}>
-                        {{ i }}
-                    </option>
-                {% endfor %}
-            </select>
+    <div class="card shadow">
+        <div class="card-header">
+            <h1 class="h4 text-center mb-0 text-muted">Password generator</h1>
         </div>
 
-        <div>
-            <label for="uppercase-letters">Uppercase letters</label>
-            <input type="checkbox" id="uppercase-letters" name="uppercase-letters" {{ app.request.cookies.getBoolean('app_uppercase_letters') ? 'checked' }}>
-        </div>
+        <div class="card-body">
+            <form action="{{ path('app_generate_password') }}" method="get">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="length" class="form-label">Length</label>
+                            <select name="length" id="length" class="form-select w-75">
+                                {% for i in password_min_length..password_max_length %}
+                                    <option value="{{ i }}" {{ i == password_length ? 'selected' }}>
+                                        {{ i }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
 
-        <div>
-            <label for="digits">Numbers</label>
-            <input type="checkbox" id="digits" name="digits" {{ app.request.cookies.getBoolean('app_digits') ? 'checked'  }}>
-        </div>
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <label for="uppercase-letters" class="form-check-label">Uppercase letters</label>
+                            <input type="checkbox" id="uppercase-letters" name="uppercase-letters" class="form-check-input" {{ app.request.cookies.getBoolean('app_uppercase_letters') ? 'checked' }}>
+                        </div>
 
-        <div>
-            <label for="special-characters">Special characters</label>
-            <input type="checkbox" id="special-characters" name="special-characters" {{ app.request.cookies.getBoolean('app_special_characters') ? 'checked' }}>
-        </div>
+                        <div class="form-check">
+                            <label for="digits" class="form-check-label">Numbers</label>
+                            <input type="checkbox" id="digits" name="digits" class="form-check-input" {{ app.request.cookies.getBoolean('app_digits') ? 'checked'  }}>
+                        </div>
 
-        <div>
-            <button type="submit">Generate password</button>
+                        <div class="form-check">
+                            <label for="special-characters" class="form-check-label">Special characters</label>
+                            <input type="checkbox" id="special-characters" name="special-characters" class="form-check-input" {{ app.request.cookies.getBoolean('app_special_characters') ? 'checked' }}>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary w-100">Generate password</button>
+                </div>
+            </form>
         </div>
-    </form>
-
+    </div>
 
     <footer>
-        <p>Built by Damien</p>
     </footer>
 {% endblock %}
 
