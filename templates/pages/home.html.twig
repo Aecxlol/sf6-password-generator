@@ -3,7 +3,6 @@
 {% block body %}
 
     {% set password_length = app.request.cookies.getInt('app_length', password_default_length) %}
-
     <div class="card shadow">
         <div class="card-header">
             <h1 class="h4 text-center mb-0 text-muted">Password generator</h1>
