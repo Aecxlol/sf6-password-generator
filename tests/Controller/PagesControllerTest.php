@@ -61,4 +61,33 @@ class PagesControllerTest extends WebTestCase
         $client->clickLink('« Go back to homepage');
         $this->assertRouteSame('app_home');
     }
+
+    public function test_password_generation_from_form_with_values_should_work()
+    {
+        $client = static::createClient();
+        $client->request('GET', '/');
+
+        $crawler = $client->submitForm('generate-password-btn', [
+            'length' => 15,
+            'uppercase_letter' => false,
+            'digits' => true,
+            'special_characters' => true,
+        ], 'GET');
+
+        $this->assertRouteSame('app_generate_password');
+        $this->assertSame(15, mb_strlen($crawler->filter('.alert.alert-success > strong')->text()));
+
+        $client->clickLink('« Go back to homepage');
+        $this->assertRouteSame('app_home');
+
+        $this->assertSame(15, $crawler->filter('select[name="length"] > option[selected]')->attr('value'));
+        $this->assertCheckboxNotChecked('uppercase_letters');
+        $this->assertCheckboxChecked('digits');
+        $this->assertCheckboxChecked('special_characters');
+
+        $this->assertBrowserCookieValueSame('app_length', '15');
+        $this->assertBrowserCookieValueSame('app_uppercase_letters', '0');
+        $this->assertBrowserCookieValueSame('app_digits', '1');
+        $this->assertBrowserCookieValueSame('app_special_characters', '1');
+    }
 }
