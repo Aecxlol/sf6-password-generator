@@ -15,7 +15,7 @@ class PagesController extends AbstractController
     /**
      * @return Response
      */
-    #[Route('/', name: 'app_home')]
+    #[Route('/', name: 'app_home', methods: ['GET'])]
     public function home(): Response
     {
         # Get the param set in services.yaml
@@ -32,7 +32,7 @@ class PagesController extends AbstractController
      * @return Response
      * @throws ExceptionAlias
      */
-    #[Route('/generate-password', name: 'app_generate_password')]
+    #[Route('/generate-password', name: 'app_generate_password', methods: ['GET'])]
     public function generatePassword(Request $request, PasswordGenerator $passwordGenerator): Response
     {
         # Saving all the user's choices from the form
