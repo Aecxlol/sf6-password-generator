@@ -44,21 +44,16 @@ class PasswordGenerator
             }
         }
 
+        # We make sure that the password doesn't exceed the length chosen
+        # by the user
+        $password = array_splice($password, 0, $length);
+
         # We shuffle the password to make the password to not always have
         # the same order as lowercase-uppercase-digit-specialChar
         $password = $this->secureShuffle($password);
 
         # Converts the array into a string
-        $password = implode('', $password);
-
-        # We make sure that the password doesn't exceed the length chosen
-        # by the user
-        if (strlen($password) > $length) {
-            $elementsToDelete = strlen($password) - $length;
-            $password         = substr($password, 0, -$elementsToDelete);
-        }
-
-        return $password;
+        return implode('', $password);
     }
 
     /**

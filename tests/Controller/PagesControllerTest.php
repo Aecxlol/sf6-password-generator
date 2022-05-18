@@ -69,25 +69,53 @@ class PagesControllerTest extends WebTestCase
 
         $crawler = $client->submitForm('generate-password-btn', [
             'length' => 15,
-            'uppercase_letter' => false,
+            'uppercase-letters' => false,
             'digits' => true,
-            'special_characters' => true,
+            'special-characters' => true
         ], 'GET');
 
         $this->assertRouteSame('app_generate_password');
         $this->assertSame(15, mb_strlen($crawler->filter('.alert.alert-success > strong')->text()));
 
-        $client->clickLink('« Go back to homepage');
+        $crawler = $client->clickLink('« Go back to homepage');
         $this->assertRouteSame('app_home');
 
-        $this->assertSame(15, $crawler->filter('select[name="length"] > option[selected]')->attr('value'));
-        $this->assertCheckboxNotChecked('uppercase_letters');
+        $this->assertSame(15, (int)$crawler->filter('select[name="length"] > option[selected]')->attr('value'));
+        $this->assertCheckboxNotChecked('uppercase-letters');
         $this->assertCheckboxChecked('digits');
-        $this->assertCheckboxChecked('special_characters');
+        $this->assertCheckboxChecked('special-characters');
 
         $this->assertBrowserCookieValueSame('app_length', '15');
         $this->assertBrowserCookieValueSame('app_uppercase_letters', '0');
         $this->assertBrowserCookieValueSame('app_digits', '1');
         $this->assertBrowserCookieValueSame('app_special_characters', '1');
+    }
+
+    public function test_password_min_length_should_be_8()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/generate-password?length=2');
+
+//        $crawler = $client->submitForm('generate-password-btn', [
+//            'length' => 2
+//        ], 'GET');
+
+        $this->assertRouteSame('app_generate_password');
+
+        $this->assertSame(8, mb_strlen($crawler->filter('.alert.alert-success > strong')->text()));
+    }
+
+    public function test_password_max_length_should_be_60()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/generate-password?length=60');
+
+//        $crawler = $client->submitForm('generate-password-btn', [
+//            'length' => 200
+//        ], 'GET');
+
+        $this->assertRouteSame('app_generate_password');
+
+        $this->assertSame(60, mb_strlen($crawler->filter('.alert.alert-success > strong')->text()));
     }
 }
